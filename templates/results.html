@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Results</h1>
+    <h2>Assembled Work:</h2>
+    <pre>{{ assembled_work }}</pre>
+
+    <h2>Outputs:</h2>
+    <ul>
+        {% for output in outputs %}
+            <li>{{ output }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Explanations:</h2>
+    <ul>
+        {% for explanation in explanations %}
+            <li>{{ explanation }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('index') }}">Back</a>
+{% endblock %}

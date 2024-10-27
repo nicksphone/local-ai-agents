@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Tasks</title>
+</head>
+<body>
+    <h1>Approve Tasks</h1>
+    <form method="POST">
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <strong>{{ task }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Do you approve the above tasks?</h3>
+        <label>
+            <input type="radio" name="approve" value="yes" required> Yes
+        </label>
+        <label>
+            <input type="radio" name="approve" value="no"> No
+        </label>
+        
+        <br><br>
+        <label for="revisions">Clarifications or Revisions:</label><br>
+        <input type="text" name="revisions" placeholder="What needs to be revised?">
+        <br><br>
+        <input type="submit" value="Submit Approval">
+    </form>
+    <a href="{{ url_for('index') }}">Back</a>
+</body>
+</html>

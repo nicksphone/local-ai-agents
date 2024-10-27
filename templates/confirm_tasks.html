@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Confirm Task List</h2>
+    <form method="POST" action="/confirm_tasks">
+        <ul>
+            {% for task in tasks %}
+                <li>{{ task }}</li>
+            {% endfor %}
+        </ul>
+        <p>Do you confirm these tasks?</p>
+        <input type="radio" id="yes" name="confirmation" value="yes" required>
+        <label for="yes">Yes</label><br>
+        <input type="radio" id="no" name="confirmation" value="no">
+        <label for="no">No</label><br><br>
+        <label for="feedback">If no, please provide your feedback:</label><br>
+        <textarea name="feedback" rows="4" cols="50"></textarea><br><br>
+        <button type="submit">Continue</button>
+    </form>
+{% endblock %}
