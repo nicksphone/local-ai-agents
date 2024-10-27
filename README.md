@@ -1,0 +1,1 @@
+this i a local ai agent written in python the idea is you can type anything and the head agent will break it down into tasks and send it to worker agents then combine them to output a working product. im having issues with it outputting the completed tasks
