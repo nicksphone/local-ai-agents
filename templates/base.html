@@ -2,18 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Multi-Level Agent System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Task Creator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='loading.css') }}">
+    <script>
+        function showLoading(message = 'Processing...') {
+            document.getElementById('loading-overlay').style.display = 'flex';
+            document.getElementById('loading-text').innerText = message;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+    </script>
 </head>
 <body>
     <header>
-        <h1>Multi-Level Agent System</h1>
+        <h1>AI Task Creator</h1>
+        <p class="subtitle">Transform your ideas into actionable tasks</p>
     </header>
+    
     <main>
         {% block content %}{% endblock %}
     </main>
+
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div id="loading-text" class="loading-text">Processing...</div>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2023 Your Company</p>
+        <p>&copy; 2024 AI Task Creator - Powered by Advanced AI</p>
     </footer>
 </body>
 </html>

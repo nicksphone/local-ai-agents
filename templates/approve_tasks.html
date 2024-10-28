@@ -1,35 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approve Tasks</title>
-</head>
-<body>
-    <h1>Approve Tasks</h1>
-    <form method="POST">
-        <ul>
-            {% for task in tasks %}
-                <li>
-                    <strong>{{ task }}</strong>
-                </li>
-            {% endfor %}
-        </ul>
-        
-        <h3>Do you approve the above tasks?</h3>
-        <label>
-            <input type="radio" name="approve" value="yes" required> Yes
-        </label>
-        <label>
-            <input type="radio" name="approve" value="no"> No
-        </label>
-        
-        <br><br>
-        <label for="revisions">Clarifications or Revisions:</label><br>
-        <input type="text" name="revisions" placeholder="What needs to be revised?">
-        <br><br>
-        <input type="submit" value="Submit Approval">
-    </form>
-    <a href="{{ url_for('index') }}">Back</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="task-review-container">
+        <h2>Review Generated Tasks</h2>
+        <p class="instruction-text">Please review and approve the tasks for your project:</p>
+
+        <form method="POST" onsubmit="showLoading('Processing approved tasks...')">
+            <div class="task-list">
+                {% for task in tasks %}
+                <div class="task-card">
+                    <div class="task-content">
+                        <h3>Task {{ loop.index }}</h3>
+                        <p>{{ task }}</p>
+                    </div>
+                    <div class="task-actions">
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="{{ task.replace(' ', '_') }}_approve" value="yes" required>
+                                <span class="radio-text">Approve</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="{{ task.replace(' ', '_') }}_approve" value="no">
+                                <span class="radio-text">Reject</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="revision-section">
+                <h3>Additional Comments</h3>
+                <textarea 
+                    name="revisions" 
+                    placeholder="Optional: Add any specific revisions or comments..."
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Process Approved Tasks</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Start Over</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

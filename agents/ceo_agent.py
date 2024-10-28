@@ -2,7 +2,7 @@ import os
 import uuid
 import threading
 from datetime import datetime
-from agents.worker_agent import WorkerAgent
+from .worker_agent import WorkerAgent
 from utils import generate_response
 
 class CEOAgent:
@@ -13,6 +13,7 @@ class CEOAgent:
         self.output_directory = ""  # Directory for output files
         self.assembled_work = ""  # Initialize assembled_work to an empty string
         self.outputs = []  # Initialize outputs to an empty list
+        self.explanations = []  # Initialize explanations to an empty list
 
     def process_input(self, user_input):
         """
@@ -53,11 +54,12 @@ class CEOAgent:
         """
         Determine the expected output format based on the task description.
         """
-        if "program" in task or "code" in task:
+        task_lower = task.lower()
+        if "program" in task_lower or "code" in task_lower:
             return "code"
-        elif "image" in task:
+        elif "image" in task_lower:
             return "image"
-        elif "write" in task or "story" in task or "text" in task:
+        elif "write" in task_lower or "story" in task_lower or "text" in task_lower:
             return "text"
         else:
             return "text"  # Default to text if not specified
@@ -74,9 +76,9 @@ class CEOAgent:
             }
             return {"task": task, "files": file_structure}
         elif output_format == "text":
-            return {"task": task, "files": {"output.txt": "Generated text content."}}
+            return {"task": task, "files": {"output.txt": ""}}
         elif output_format == "image":
-            return {"task": task, "files": {"output.png": "Image data or path."}}
+            return {"task": task, "files": {"output.png": ""}}
         else:
             return {"task": task, "files": {}}
 
@@ -84,20 +86,30 @@ class CEOAgent:
         """
         Receive completed work from a Worker Agent.
         """
-        self.workers.pop(worker_id)
-        self.completed_works.append(work)
-        self.outputs.append(work)  # Collect outputs for display
+        if worker_id in self.workers:
+            self.workers.pop(worker_id)
+            self.completed_works.append(work)
+            self.outputs.append(work)  # Collect outputs for display
 
     def provide_explanations(self):
         """
         Provide explanations for the actions taken during the task processing.
         """
-        # Output the files to the created directory
-        for work in self.completed_works:
-            for filename, content in work['files'].items():
-                file_path = os.path.join(self.output_directory, filename)
-                with open(file_path, "w") as file:
-                    file.write(content)
+        try:
+            # Output the files to the created directory
+            for work in self.completed_works:
+                for filename, content in work['files'].items():
+                    file_path = os.path.join(self.output_directory, filename)
+                    with open(file_path, "w", encoding='utf-8') as file:
+                        if isinstance(content, str):
+                            file.write(content)
+                        else:
+                            file.write(str(content))
 
-        # Assemble the final output
-        self.assembled_work = "\n".join([f"{work['task']} - Output files: {', '.join(work['files'].keys())}" for work in self.completed_works])
+            # Assemble the final output
+            self.assembled_work = "\n".join([
+                f"{work['task']} - Output files: {', '.join(work['files'].keys())}" 
+                for work in self.completed_works
+            ])
+        except Exception as e:
+            print(f"Error in provide_explanations: {str(e)}")

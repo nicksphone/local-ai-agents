@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Welcome to the anything creator</h1>
-    <form method="POST">
-        <textarea name="user_input" rows="4" cols="50" placeholder="Enter your game idea here..."></textarea><br>
-        <input type="submit" value="Create something">
-    </form>
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <h2>Welcome to AI Task Creator</h2>
+            <p>Transform your ideas into organized, actionable tasks using advanced AI.</p>
+        </div>
+
+        <div class="input-card">
+            <form method="POST" onsubmit="showLoading('Analyzing your request...')">
+                <div class="form-group">
+                    <label for="user_input">Describe your idea:</label>
+                    <textarea 
+                        id="user_input"
+                        name="user_input" 
+                        placeholder="Describe what you'd like to create... (e.g., 'Design a space exploration game' or 'Create a recipe management system')"
+                        required
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Tasks</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

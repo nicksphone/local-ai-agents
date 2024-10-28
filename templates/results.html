@@ -1,23 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Results</h1>
-    <h2>Assembled Work:</h2>
-    <pre>{{ assembled_work }}</pre>
+    <div class="results-container">
+        <h2>Task Results</h2>
 
-    <h2>Outputs:</h2>
-    <ul>
-        {% for output in outputs %}
-            <li>{{ output }}</li>
-        {% endfor %}
-    </ul>
+        {% if assembled_work %}
+        <div class="result-section">
+            <h3>Assembled Work</h3>
+            <div class="result-content">
+                <pre class="code-block">{{ assembled_work }}</pre>
+            </div>
+        </div>
+        {% endif %}
 
-    <h2>Explanations:</h2>
-    <ul>
-        {% for explanation in explanations %}
-            <li>{{ explanation }}</li>
-        {% endfor %}
-    </ul>
+        {% if outputs %}
+        <div class="result-section">
+            <h3>Generated Outputs</h3>
+            <div class="output-list">
+                {% for output in outputs %}
+                <div class="output-card">
+                    <h4>Task Output {{ loop.index }}</h4>
+                    <div class="output-content">
+                        {{ output }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
 
-    <a href="{{ url_for('index') }}">Back</a>
+        {% if explanations %}
+        <div class="result-section">
+            <h3>Process Details</h3>
+            <ul class="explanation-list">
+                {% for explanation in explanations %}
+                <li class="explanation-item">{{ explanation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="button-group">
+            <a href="{{ url_for('index') }}" class="btn btn-primary" onclick="showLoading('Starting new project...')">
+                Start New Project
+            </a>
+        </div>
+    </div>
 {% endblock %}
