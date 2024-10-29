@@ -10,7 +10,7 @@ def generate_response(prompt):
   Generates a response from the specified Ollama model based on the provided prompt.
   """
   try:
-      server_url = "http://192.168.8.5:11434/api/generate"
+      server_url = "http://(yourip or serversip):11434/api/generate"
       model = "llama3.1:8b"
       
       payload = {
